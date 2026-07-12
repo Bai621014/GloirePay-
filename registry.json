@@ -1,0 +1,14 @@
+{
+  "contracts": {
+    "GLC": "0x...", 
+    "Treasury": "0x..."
+  },
+  "dex": {
+    "router": "0x...",
+    "factory": "0x..."
+  },
+  "settings": {
+    "autoSwapSlippage": 50,
+    "minTreasuryThreshold": "1000000000000000000"
+  }
+}
