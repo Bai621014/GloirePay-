@@ -1,37 +1,7 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GloireDevIA — Interface</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-  <main class="container">
-    <header>
-      <h1>GloireDevIA</h1>
-      <p class="subtitle">Agent d'analyse & d'audit — {{ agent_name }}</p>
-    </header>
-
     <section class="card">
-      <h2>Envoyer des données (JSON)</h2>
-      <textarea id="payload" placeholder='{"key":"value"}' rows="8"></textarea>
-      <div class="actions">
-        <button id="btnAnalyze">Analyser</button>
-        <button id="btnAudit">Auditer (6 piliers)</button>
+      <h2>GloireDevIA : Flux de Travail</h2>
+      <div id="status-bar" style="margin-bottom:10px; font-weight:bold; color:var(--accent);">
+        En attente d'instruction...
       </div>
-    </section>
-
-    <section class="card">
-      <h2>Résultat</h2>
       <pre id="output" class="output">Aucun résultat</pre>
     </section>
-
-    <footer>
-      <small>GET /health pour état du service</small>
-    </footer>
-  </main>
-
-  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-</body>
-</html>
