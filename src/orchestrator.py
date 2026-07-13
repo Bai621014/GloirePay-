@@ -1,24 +1,37 @@
-import os
-from src.blockchain_agent import GloireDevIA_Web3
+import time
+from .gloire_base import GloireBase
+from .blockchain_agent import GloireDevIA_Web3
 
 class GloireOrchestrator:
     def __init__(self):
+        # Initialisation souveraine : on charge tout depuis le local
+        self.db = GloireBase()
         self.agent = GloireDevIA_Web3()
-        # Seuil minimal en Wei (1 MATIC = 10^18 Wei)
-        self.threshold = 1000000000000000000 
+        # On récupère le seuil directement depuis votre registre local
+        self.threshold = self.db.db.get("settings", {}).get("maintenance_threshold", 1000000000000000000)
 
     def run_cycle(self):
-        status = self.agent.get_treasury_status()
-        print(f"Audit: Trésorerie à {status['balance_wei']} Wei")
+        print("--- [GloirePay] Cycle Souverain Actif ---")
         
-        # Logique de décision souveraine
-        if status['balance_wei'] >= self.threshold:
-            print("Action: Seuil atteint. Déclenchement maintenance.")
-            return self.agent.execute_treasury_maintenance()
+        # Audit interne
+        status = self.agent.get_treasury_status()
+        balance = status['balance_wei']
+        
+        print(f"Audit Trésorerie: {balance} Wei")
+        
+        # Logique de décision ancrée dans la GloireBase
+        if balance >= self.threshold:
+            print("Action: Seuil atteint. Exécution maintenance...")
+            result = self.agent.execute_treasury_maintenance()
+            # Enregistrement de la preuve de maintenance dans GloireBase
+            self.db.save_tx(f"MAIN-{time.time()}", {"action": "maintenance", "result": result})
+            self.db.save_state()
+            return result
         else:
-            print("Action: Trésorerie sous le seuil. Aucune action.")
+            print("Action: Trésorerie protégée (sous seuil).")
             return "Standby"
 
 if __name__ == "__main__":
-    bot = GloireOrchestrator()
-    bot.run_cycle()
+    orchestrator = GloireOrchestrator()
+    # Cycle simple sur le téléphone
+    orchestrator.run_cycle()
