@@ -3,10 +3,9 @@ import sys
 import os
 from datetime import datetime
 
-# Ajout du répertoire racine au PATH
+# Ajout de la racine au PATH
 sys.path.append(os.getcwd())
 
-# Importations absolues
 from src.gloire_base import GloireBase
 from src.blockchain_agent import GloireDevIA_Web3
 
@@ -24,7 +23,6 @@ class GloireOrchestrator:
             status = self.agent.get_treasury_status()
             balance = int(status.get('balance_wei', 0))
             print(f"Trésorerie Actuelle : {balance} Wei")
-            
             if balance >= self.threshold:
                 print(">> [Action] Seuil atteint. Exécution maintenance...")
                 result = self.agent.execute_treasury_maintenance()
