@@ -1,12 +1,11 @@
+cat << 'EOF' > src/orchestrator.py
 import time
 import sys
 import os
 from datetime import datetime
 
-# Ajoute le répertoire courant (la racine) au PATH
 sys.path.append(os.getcwd())
 
-# Importation absolue (SANS LES POINTS)
 from src.gloire_base import GloireBase
 from src.blockchain_agent import GloireDevIA_Web3
 
@@ -40,3 +39,4 @@ if __name__ == "__main__":
     while True:
         bot.run_cycle()
         time.sleep(3600)
+EOF
