@@ -3,7 +3,7 @@ import sys
 import os
 from datetime import datetime
 
-# Ajout de la racine au PATH
+# Ajout du dossier racine au PATH pour trouver 'src'
 sys.path.append(os.getcwd())
 
 from src.gloire_base import GloireBase
@@ -24,9 +24,9 @@ class GloireOrchestrator:
             balance = int(status.get('balance_wei', 0))
             print(f"Trésorerie Actuelle : {balance} Wei")
             if balance >= self.threshold:
-                print(">> [Action] Seuil atteint. Exécution maintenance...")
+                print(">> [Action] Maintenance souveraine déclenchée.")
                 result = self.agent.execute_treasury_maintenance()
-                self.db.save_tx(f"MAIN-{int(time.time())}", {"action": "maintenance", "result": result})
+                self.db.save_tx(f"MAIN-{int(time.time())}", {"status": "SUCCESS", "result": result})
                 self.db.save_state()
             else:
                 print(">> [Standby] Trésorerie sécurisée (sous seuil).")
@@ -35,7 +35,7 @@ class GloireOrchestrator:
 
 if __name__ == "__main__":
     bot = GloireOrchestrator()
-    print("Système de surveillance activé.")
+    print("Moteur Pro activé. Surveillance active...")
     while True:
         bot.run_cycle()
         time.sleep(3600)
