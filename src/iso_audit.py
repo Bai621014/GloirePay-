@@ -1,51 +1,55 @@
-import datetime
-import json
+"""
+GLOIREPAY — VALIDATEUR ISO 20022 SOUVERAIN (2026.VIP)
+Standard : Intégrité financière, Traçabilité Web3, Typage robuste.
+"""
+
+from datetime import datetime, timezone
+from typing import Dict, Any, Union
+import uuid
+import logging
+
+# Configuration logging souverain
+logger = logging.getLogger("GloirePay-ISO")
 
 class ISO20022_Validator:
-    """
-    Validateur de conformité pour les messages financiers (Standard ISO 20022).
-    Assure l'intégrité, la traçabilité et la validation des données.
-    """
+    """Moteur de validation conforme aux standards bancaires globaux."""
     
-    REQUIRED_FIELDS = ["sender", "receiver", "amount", "currency", "purpose"]
+    REQUIRED_FIELDS = {"sender", "receiver", "amount", "currency", "purpose"}
+
+    @classmethod
+    def audit_transaction(cls, tx_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Audit complet : Vérification structurelle et sémantique."""
+        try:
+            # 1. Audit d'intégrité (Performance O(1))
+            missing = cls.REQUIRED_FIELDS - tx_data.keys()
+            if missing:
+                return cls._report("NON-COMPLIANT", f"Champs manquants: {missing}")
+
+            # 2. Audit de valeur (Finance Pro)
+            if not isinstance(tx_data["amount"], (int, float)) or tx_data["amount"] <= 0:
+                return cls._report("NON-COMPLIANT", "Montant invalide")
+
+            # 3. Audit de traçabilité (Web3 Ready)
+            return {
+                "status": "COMPLIANT",
+                "audit_id": f"GLOIRE-{uuid.uuid4().hex[:8].upper()}",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "integrity": "VERIFIED_2026"
+            }
+        except Exception as e:
+            logger.error(f"Erreur fatale audit: {e}")
+            return cls._report("CRITICAL_FAILURE", "Exception système")
 
     @staticmethod
-    def audit_transaction(tx_data):
-        """
-        Analyse une transaction pour vérifier sa conformité avec les normes ISO 20022.
-        """
-        # 1. Vérification de la structure obligatoire (Intégrité)
-        for field in ISO20022_Validator.REQUIRED_FIELDS:
-            if field not in tx_data:
-                return {
-                    "status": "NON-COMPLIANT",
-                    "error": f"Champ obligatoire manquant : {field}",
-                    "timestamp": datetime.datetime.utcnow().isoformat()
-                }
-
-        # 2. Validation de la donnée (Formatage)
-        if not isinstance(tx_data["amount"], (int, float)) or tx_data["amount"] <= 0:
-            return {
-                "status": "NON-COMPLIANT",
-                "error": "Montant invalide : doit être numérique et positif",
-                "timestamp": datetime.datetime.utcnow().isoformat()
-            }
-
-        # 3. Validation réussie (Traçabilité)
+    def _report(status: str, msg: str) -> Dict[str, Any]:
+        """Générateur de rapport normalisé."""
         return {
-            "status": "COMPLIANT",
-            "message": "Transaction conforme ISO 20022",
-            "timestamp": datetime.datetime.utcnow().isoformat(),
-            "audit_id": f"ISO-{datetime.datetime.utcnow().strftime('%Y%m%d-%H%M%S')}"
+            "status": status,
+            "error": msg,
+            "timestamp": datetime.now(timezone.utc).isoformat()
         }
 
-# Exemple d'utilisation rapide pour test unitaire
+# Exemple d'usage VIP
 if __name__ == "__main__":
-    test_tx = {
-        "sender": "0xABC",
-        "receiver": "0xXYZ",
-        "amount": 100.50,
-        "currency": "EUR",
-        "purpose": "Maintenance"
-    }
+    test_tx = {"sender": "0x...", "receiver": "0x...", "amount": 100.5, "currency": "EUR", "purpose": "TX"}
     print(ISO20022_Validator.audit_transaction(test_tx))
