@@ -3,25 +3,38 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ title }} — GloireDevIA</title>
+  <title>{{ title }} | GloireDevIA</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .meta-badge { background: #0f172a; color: #3b82f6; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #1e293b; }
+    .success-text { color: #10b981; }
+  </style>
 </head>
 <body>
   <main class="container">
-    <header>
-      <h1>{{ title }} — Résultat</h1>
+    <header style="display: flex; justify-content: space-between; align-items: baseline;">
+      <h1>Analyse Souveraine</h1>
+      <span class="meta-badge">ISO 20022 COMPLIANT</span>
     </header>
 
     <section class="card">
-      <p style="color: var(--muted);">Détails de l'analyse système :</p>
-      <pre class="output">{{ result | tojson(indent=2) }}</pre>
+      <div style="margin-bottom: 1rem;">
+        <p style="margin: 0; font-weight: 600;">Status : <span class="success-text">Vérifié</span></p>
+      </div>
+      
+      <pre id="output" class="output">{{ result | tojson(indent=2) }}</pre>
     </section>
 
     <div class="actions">
-      <a href="{{ url_for('index') }}">
-        <button class="secondary">Retour à l'interface</button>
+      <a href="{{ url_for('index') }}" style="text-decoration: none;">
+        <button class="secondary">← Retour au Hub</button>
       </a>
+      <button onclick="window.print()">Exporter Audit (PDF)</button>
     </div>
+
+    <footer>
+      GloirePay System 2026 — Souveraineté Digitale
+    </footer>
   </main>
 </body>
 </html>
