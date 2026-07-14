@@ -1,5 +1,24 @@
+# --- GLOIREPAY SOUVERAIN — DÉPENDANCES VIP ---
+# Version 2026.VIP - Validée pour haute disponibilité
+
+# Core Framework
 Flask==3.0.0
 gunicorn==21.2.0
-requests==2.31.0
+
+# Asynchronisme pour performance Web3
+gevent==23.9.1
+greenlet==3.0.1
+
+# Blockchain & Sécurité
 web3==6.11.1
+requests==2.31.0
+eth-account==0.11.0
+cryptography==41.0.5
+
+# Configuration & Audit
 python-dotenv==1.0.0
+pytest==7.4.3
+pydantic==2.4.2
+
+# Utilities
+uuid==1.30
