@@ -1,25 +1,21 @@
 <section class="card">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-    <h2 style="margin: 0; font-size: 1.25rem;">GloireDevIA : Flux de Travail</h2>
-    <div id="chain-status" style="font-size: 0.75rem; background: #064e3b; color: #34d399; padding: 4px 8px; border-radius: 20px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px;">
+      GloireDevIA : Flux de Travail
+    </h2>
+    <div id="chain-status" class="status-badge" style="background: rgba(16, 185, 129, 0.1);">
       ● POLYGON ZKEVM
     </div>
   </div>
   
-  <div id="status-bar" class="status-bar" style="margin-bottom: 12px; font-weight: 600; color: var(--accent); padding: 12px; border-left: 4px solid var(--accent); background: #0b1220; border-radius: 0 4px 4px 0;">
+  <div id="status-bar" class="status-bar" style="margin-bottom: 16px; font-weight: 600; color: var(--accent); padding: 14px; border-left: 4px solid var(--accent); background: #0b1220; border-radius: 0 8px 8px 0;">
     Système en ligne : Attente d'instruction souveraine...
   </div>
   
-  <pre id="output" class="output">
-  [INFOS] Système initialisé
-  [STATUS] Audit ISO 20022 activé
-  [READY] En attente de payload...
+  <pre id="output" class="output" style="min-height: 250px;">
+[INFOS] Initialisation du noyau souverain...
+[STATUS] Audit ISO 20022 activé.
+[NETWORK] Node Polygon zkEVM connecté.
+[READY] Système VIP prêt pour instruction.
   </pre>
 </section>
-
-<style>
-  .status-bar {
-    transition: all 0.3s ease;
-    font-family: 'JetBrains Mono', monospace;
-  }
-</style>
