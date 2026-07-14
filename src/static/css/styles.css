@@ -1,77 +1,96 @@
 :root {
-  /* Palette Souveraine */
+  /* Palette Souveraine - Mode Haute Performance */
   --bg: #050507;
   --card: #0c0c11;
-  --accent: #3b82f6; /* Bleu institutionnel */
-  --text: #f8fafc;
-  --muted: #94a3b8;
+  --accent: #2563eb;       /* Bleu Institutionnel Profond */
+  --accent-glow: rgba(37, 99, 235, 0.2);
+  --text: #f1f5f9;
+  --muted: #64748b;
   --border: #1e293b;
   --success: #10b981;
-  --radius: 12px;
+  --critical: #ef4444;
+  --radius: 16px;          /* Plus moderne */
 }
 
-* { box-sizing: border-box; }
-
 body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top right, #0f172a, #050507);
   color: var(--text);
   margin: 0;
   padding: 24px;
+  line-height: 1.6;
 }
 
-.container { max-width: 800px; margin: 0 auto; }
+.container { max-width: 900px; margin: 0 auto; }
 
-/* Design Carte "Dark Mode" Pro */
+/* Carte Glassmorphism "VIP" */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-  backdrop-filter: blur(10px);
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  backdrop-filter: blur(20px);
 }
 
-/* Input IA ultra-lisible */
+/* Input IA - Style "Terminal Sécurisé" */
 textarea {
   width: 100%;
-  background: #050507;
-  color: #fff;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  min-height: 160px;
-  transition: all 0.3s ease;
+  background: #020617;
+  color: #e2e8f0;
+  padding: 20px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  min-height: 200px;
+  resize: vertical;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent-glow);
 }
 
-/* Boutons Action Web3 */
+/* Boutons - Style "Web3 Action" */
 button {
   background: var(--accent);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 16px 28px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  transition: transform 0.1s, opacity 0.2s;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
 }
 
-button:hover { opacity: 0.95; }
-button:active { transform: scale(0.98); }
+button:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
 
-/* Zone Output "Souveraine" */
+/* Output Souverain - Zone d'Audit */
 .output {
-  background: #020617;
-  border: 1px solid var(--accent);
+  background: #000000;
+  border-left: 4px solid var(--success);
   color: var(--success);
-  padding: 20px;
-  border-radius: 8px;
+  padding: 24px;
+  border-radius: 0 8px 8px 0;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  overflow-x: auto;
 }
+
+/* Indicateur de statut en temps réel */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+  font-weight: 600;
+  font-size: 0.75rem;
+  }
