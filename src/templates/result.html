@@ -3,37 +3,51 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ title }} | GloireDevIA</title>
+  <title>Rapport d'Audit Souverain | GloireDevIA</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    .meta-badge { background: #0f172a; color: #3b82f6; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #1e293b; }
-    .success-text { color: #10b981; }
+    :root { --print-bg: #ffffff; --print-text: #000000; }
+    @media print {
+      body { background: var(--print-bg); color: var(--print-text); }
+      .card, .output { border: 1px solid #ccc !important; box-shadow: none !important; }
+      .actions, .footer { display: none; }
+    }
+    .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
+    .meta-badge { background: #064e3b; color: #34d399; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; border: 1px solid #10b981; }
+    .actions { display: flex; gap: 16px; margin-top: 30px; }
+    .btn-export { background: var(--accent); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; }
+    .btn-return { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
   <main class="container">
-    <header style="display: flex; justify-content: space-between; align-items: baseline;">
-      <h1>Analyse Souveraine</h1>
-      <span class="meta-badge">ISO 20022 COMPLIANT</span>
+    
+    <header class="report-header">
+      <div>
+        <h1 style="margin: 0;">Analyse Souveraine</h1>
+        <p style="color: var(--muted); margin: 5px 0 0 0;">Rapport de conformité ISO 20022 — GloirePay 2026</p>
+      </div>
+      <span class="meta-badge">SYSTÈME VÉRIFIÉ</span>
     </header>
 
     <section class="card">
-      <div style="margin-bottom: 1rem;">
-        <p style="margin: 0; font-weight: 600;">Status : <span class="success-text">Vérifié</span></p>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; font-size: 1.1rem; color: var(--text);">Détails de l'Audit</h2>
+        <span style="color: var(--success); font-weight: 700;">● STATUS : COMPLIANT</span>
       </div>
       
-      <pre id="output" class="output">{{ result | tojson(indent=2) }}</pre>
+      <pre id="output" class="output">{{ result | tojson(indent=4) }}</pre>
     </section>
 
     <div class="actions">
       <a href="{{ url_for('index') }}" style="text-decoration: none;">
-        <button class="secondary">← Retour au Hub</button>
+        <button class="btn-return">← Retour au Hub</button>
       </a>
-      <button onclick="window.print()">Exporter Audit (PDF)</button>
+      <button class="btn-export" onclick="window.print()">Exporter Audit (PDF)</button>
     </div>
 
-    <footer>
-      GloirePay System 2026 — Souveraineté Digitale
+    <footer style="margin-top: 50px; text-align: center; color: var(--muted); font-size: 0.75rem;">
+      GloirePay System 2026 — Souveraineté Digitale — Document sécurisé généré par GloireDevIA.
     </footer>
   </main>
 </body>
