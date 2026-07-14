@@ -1,43 +1,27 @@
-# GloireDevIA
+# GloireDevIA — Moteur d'Audit Souverain & Conformité ISO 20022
 
-GloireDevIA est un agent d'audit et d'analyse conçu pour assister les équipes techniques et métiers dans l'évaluation de conformité et de sécurité en s'appuyant sur les six piliers pertinents pour l'écosystème ISO 20022.
+GloireDevIA est un agent d'audit haute performance conçu pour garantir la souveraineté numérique, l'intégrité financière et la conformité aux standards ISO 20022. Conçu pour l'écosystème Web3 (Polygon zkEVM), cet agent orchestre l'évaluation de sécurité et la validation transactionnelle.
 
-## Mission de l'agent
-L'objectif principal de GloireDevIA est de fournir :
-- Une analyse rapide d'artefacts applicatifs via une API simple.
-- Un audit initial basé sur les 6 piliers ISO 20022 pour détecter les lacunes évidentes.
-- Un point d'entrée extensible pour intégrer des contrôles plus approfondis et automatisés.
+## 🛡️ Les 6 Piliers de la Souveraineté
+Chaque audit est mesuré par le moteur SecurityAudit selon ces axes critiques :
+1. Gouvernance : Audit des politiques et protocoles de décision.
+2. Confidentialité : Validation des standards de chiffrement (AES-256).
+3. Intégrité : Vérification des signatures et hashs d'intégrité (SHA-256).
+4. Disponibilité : Monitoring actif de la trésorerie et nœuds RPC.
+5. Traçabilité : Journalisation immuable des transactions (Audit Logs).
+6. Conformité : Alignement strict aux normes ISO 20022.
 
-## Les 6 piliers (ISO 20022 — adaptation contextuelle)
-1. Gouvernance — Politiques et responsabilités.
-2. Confidentialité — Protection des données et chiffrement.
-3. Intégrité — Mécanismes assurant que les données ne sont pas altérées.
-4. Disponibilité — Surveillance, haute disponibilité et reprise.
-5. Traçabilité — Journalisation et traçage des opérations.
-6. Conformité — Documentation et alignement réglementaire.
+## 🚀 Architecture VIP (Technologie 2026)
+* Moteur API : Flask propulsé par Gunicorn (Workers gevent pour haute concurrence).
+* Intégrité Code : Analyseur statique (AST) avec signature de patchs (SHA-256).
+* Infrastructure Blockchain : Connectivité native Web3.py (Polygon zkEVM).
+* Diagnostic : Système de logging structuré (gloire_audit.log) pour archivage légal.
 
-## Structure du projet
-- src/ : code applicatif (agent, audit, API Flask).
-- tests/ : tests unitaires (pytest).
-- requirements.txt, Procfile, runtime.txt : fichiers nécessaires pour le déploiement.
+## 🛠️ Déploiement Souverain
+Le système est optimisé pour un déploiement continu via Render ou Docker.
 
-## Déploiement sur Render
-1. Connectez votre dépôt GitHub à Render.
-2. Créez un nouveau Web Service :
-   - Environment : Python
-   - Build Command : pip install -r requirements.txt
-   - Start Command : gunicorn src.app:app (Render utilisera aussi le Procfile si présent)
-   - Runtime : Python 3.11 (Render prend en charge runtime.txt)
-3. Variables d'environnement : ajoutez les clés nécessaires si vous étendez l'agent (ex. API keys).
-4. Tester l'application :
-   - Endpoint de santé : GET /health
-   - Exemple d'appel : curl -X POST https://<votre-service>.onrender.com/analyze -d '{"foo":"bar"}' -H "Content-Type: application/json"
-
-## Tests
-- Exécuter les tests localement :
-  - pip install -r requirements.txt
-  - pip install pytest
-  - pytest -q
-
-## Extension
-Ce squelette est conçu pour être étendu : ajout de vrais contrôles d'audit, intégration CI/CD, gestion des secrets, monitoring et règles de sécurité renforcées.
+### 1. Pré-requis
+* Version Python : 3.11 ou supérieure.
+* Dépendances : Installez les composants essentiels :
+  ```bash
+  pip install -r requirements.txt
