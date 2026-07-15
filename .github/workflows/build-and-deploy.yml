@@ -20,7 +20,7 @@ jobs:
         run: pip install -r requirements.txt
         
       - name: Execute Security Audit (Pytest)
-        run: pytest tests/test_gloire_vip.py
+        run: pytest
         
       - name: Deploy Sovereign Treasury Engine
         env:
