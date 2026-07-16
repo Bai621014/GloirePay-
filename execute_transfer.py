@@ -2,16 +2,17 @@ import os
 from web3 import Web3
 
 def send_transaction():
-    # Utilisation de la clé définie dans GitHub Secrets
-    rpc_url = os.getenv('ALCHEMY_API_KEY') 
-    w3 = Web3(Web3.HTTPProvider(rpc_url))
-    
-    # Correction : Utilisation du nom exact de la variable secrète
+    # Récupération des secrets injectés par le pipeline GitHub
+    rpc_url = os.getenv('ALCHEMY_API_KEY')
     raw_key = os.getenv('POLYGON_PRIVATE_KEY')
     
+    # Sécurité : Si le pipeline ne transmet pas la clé, on stoppe immédiatement
     if not raw_key:
-        raise ValueError("La clé privée n'est pas chargée. Vérifiez le nom de la variable dans GitHub Secrets.")
-
+        raise ValueError("ERREUR : La variable POLYGON_PRIVATE_KEY est vide dans l'environnement !")
+    
+    w3 = Web3(Web3.HTTPProvider(rpc_url))
+    
+    # Nettoyage et chargement de la clé
     clean_key = raw_key.strip().replace('0x', '')
     account = w3.eth.account.from_key(clean_key)
     
@@ -19,8 +20,11 @@ def send_transaction():
     
     print(f">>> [SOUVERAINETÉ] Envoi depuis {account.address} vers {to_address}")
     
+    # Calcul du nonce et envoi
+    nonce = w3.eth.get_transaction_count(account.address)
+    
     tx = {
-        'nonce': w3.eth.get_transaction_count(account.address),
+        'nonce': nonce,
         'to': to_address,
         'value': w3.to_wei(0.0001, 'ether'),
         'gas': 21000,
