@@ -2,29 +2,26 @@ import os
 from web3 import Web3
 
 def send_transaction():
-    # Correction : Utilisation du nom exact du secret GitHub 'POLYGON_RPC_URL'
+    # Récupération des secrets via les noms exacts
     rpc_url = os.getenv('POLYGON_RPC_URL')
+    api_key = os.getenv('ALCHEMY_API_KEY') # Variable pour authentification secondaire si besoin
     raw_key = os.getenv('POLYGON_PRIVATE_KEY')
     
-    # Sécurité : Vérification stricte des variables
     if not rpc_url:
-        raise ValueError("ERREUR : La variable POLYGON_RPC_URL est vide !")
+        raise ValueError("ERREUR : POLYGON_RPC_URL introuvable !")
     if not raw_key:
-        raise ValueError("ERREUR : La variable POLYGON_PRIVATE_KEY est vide !")
-    
+        raise ValueError("ERREUR : POLYGON_PRIVATE_KEY introuvable !")
+
     w3 = Web3(Web3.HTTPProvider(rpc_url))
     
-    # Nettoyage et chargement de la clé
     clean_key = raw_key.strip().replace('0x', '')
     account = w3.eth.account.from_key(clean_key)
     
     to_address = "0xA1e615A74D22D9dC3D9388c2b5009DAc7917784d"
     
-    print(f">>> [SOUVERAINETÉ] Envoi depuis {account.address} vers {to_address}")
+    print(f">>> [SOUVERAINETÉ] Envoi depuis {account.address}")
     
-    # Calcul du nonce et envoi
     nonce = w3.eth.get_transaction_count(account.address)
-    
     tx = {
         'nonce': nonce,
         'to': to_address,
