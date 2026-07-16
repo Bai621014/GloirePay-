@@ -6,22 +6,23 @@
   <title>Rapport d'Audit Souverain | GloireDevIA</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <style>
-    :root { --print-bg: #ffffff; --print-text: #000000; }
+    :root { --print-bg: #ffffff; --print-text: #000000; --accent: #059669; }
     @media print {
       body { background: var(--print-bg); color: var(--print-text); }
       .card, .output { border: 1px solid #ccc !important; box-shadow: none !important; }
-      .actions, .footer { display: none; }
+      .actions, .footer { display: none !important; }
     }
     .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
     .meta-badge { background: #064e3b; color: #34d399; padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; border: 1px solid #10b981; }
+    .output { background: #f8fafc; padding: 20px; border-radius: 8px; font-family: monospace; white-space: pre-wrap; word-wrap: break-word; color: #1e293b; overflow-x: auto; }
     .actions { display: flex; gap: 16px; margin-top: 30px; }
-    .btn-export { background: var(--accent); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; }
+    .btn-export { background: var(--accent); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .btn-export:hover { opacity: 0.9; }
     .btn-return { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
   <main class="container">
-    
     <header class="report-header">
       <div>
         <h1 style="margin: 0;">Analyse Souveraine</h1>
@@ -35,7 +36,6 @@
         <h2 style="margin: 0; font-size: 1.1rem; color: var(--text);">Détails de l'Audit</h2>
         <span style="color: var(--success); font-weight: 700;">● STATUS : COMPLIANT</span>
       </div>
-      
       <pre id="output" class="output">{{ result | tojson(indent=4) }}</pre>
     </section>
 
