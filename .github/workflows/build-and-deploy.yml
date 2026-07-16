@@ -26,7 +26,7 @@ jobs:
     needs: audit-et-simulation
     runs-on: ubuntu-latest
     env:
-      GLOBALE_CLE_PRIVEE: ${{ secrets.GLOBALE_CLE_PRIVEE }}
+      # La variable GLOBALE_CLE_PRIVEE a été supprimée pour sécurité totale
       POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
     steps:
       - name: Checkout code
@@ -40,5 +40,6 @@ jobs:
       - name: Installation des dépendances
         run: pip install web3
 
-      - name: Exécution du transfert souverain
-        run: python execute_transfer.py
+      - name: Exécution du moteur de trésorerie
+        # On exécute maintenant votre main.py qui gère l'audit du Safe
+        run: python main.py
