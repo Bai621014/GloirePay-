@@ -1,31 +1,11 @@
-name: GloirePay — Pipeline Souverain
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  audit-et-simulation:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Simulation de Sécurité (Audit nœud)
-        env:
-          POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
-        run: |
-          echo ">>> [AUDIT] Vérification de la souveraineté du nœud..."
-          curl -s -X POST "$POLYGON_RPC_URL" \
-            -H "Content-Type: application/json" \
-            --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
-          echo ">>> [SUCCESS] Audit validé."
-
   deploy:
     needs: audit-et-simulation
     runs-on: ubuntu-latest
+    # --- AJOUTEZ CE BLOC ICI ---
+    env:
+      POLYGON_PRIVATE_KEY: ${{ secrets.POLYGON_PRIVATE_KEY }}
+      POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
+    # ---------------------------
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -39,7 +19,5 @@ jobs:
         run: pip install web3
 
       - name: Exécution du transfert souverain
-        env:
-          POLYGON_PRIVATE_KEY: ${{ secrets.POLYGON_PRIVATE_KEY }}
-          POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
+        # Plus besoin de redéfinir env ici, il est hérité du job
         run: python execute_transfer.py
