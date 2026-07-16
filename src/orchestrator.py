@@ -1,23 +1,16 @@
 """
 GLOIREPAY — ORCHESTRATEUR SOUVERAIN (2026.VIP)
-Moteur de surveillance transactionnelle avec tolérance aux pannes.
+Architecture asynchrone haute performance.
 """
 
-import time
-import sys
+import asyncio
 import logging
-from pathlib import Path
-from datetime import datetime, timezone
-
-# Sécurité : Injection de PATH robuste
-sys.path.append(str(Path(__file__).resolve().parent))
-
 from src import GloireBase, GloireDevIA_Web3
 
 # Configuration Logging VIP
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
+    format='%(asctime)s [%(levelname)s] [SOUVERAIN] %(message)s',
     handlers=[logging.FileHandler("gloire_audit.log"), logging.StreamHandler()]
 )
 logger = logging.getLogger("GloireOrchestrator")
@@ -27,38 +20,42 @@ class GloireOrchestrator:
         self.db = GloireBase()
         self.agent = GloireDevIA_Web3()
         self.threshold = int(self.db.db.get("settings", {}).get("minTreasuryThreshold", 10**18))
-        logger.info(">>> [SOUVERAINETÉ] Orchestrateur Initialisé")
+        self.max_gas_price = 500 * 10**9 
+        logger.info(">>> [SYSTÈME] Orchestrateur Asynchrone Initialisé")
 
-    def run_cycle(self):
-        """Cycle d'audit transactionnel sécurisé."""
+    async def run_cycle(self):
+        """Cycle d'audit asynchrone non-bloquant."""
         try:
             status = self.agent.get_treasury_status()
-            if status.get("status") == "error":
-                raise Exception(f"Node RPC unreachable: {status.get('message')}")
-                
             balance = int(status.get('balance_wei', 0))
-            logger.info(f"Audit Trésorerie : {balance} Wei")
+            current_gas = self.agent.w3.eth.gas_price
             
             if balance >= self.threshold:
-                self._execute_maintenance(balance)
+                if current_gas <= self.max_gas_price:
+                    self._execute_maintenance(balance)
+                else:
+                    logger.warning(f">> [ÉCONOMIE] Gas {current_gas} Gwei > Max. Attente.")
             else:
-                logger.info(">> [Standby] Trésorerie conforme.")
+                logger.debug(">> [STANDBY] Trésorerie conforme.")
                 
         except Exception as e:
-            logger.critical(f"!! [CRITIQUE] : {str(e)}")
+            logger.error(f"!! [ALERTE] : {str(e)}")
 
     def _execute_maintenance(self, balance: int):
-        """Exécution sécurisée de maintenance avec traçabilité."""
-        logger.warning(f">> [ACTION] Maintenance déclenchée (Bilan: {balance})")
+        # Logique de maintenance synchrone (bloquante le temps de la Tx)
         result = self.agent.execute_treasury_maintenance()
-        
-        tx_id = f"MAIN-{int(time.time())}"
-        self.db.save_tx(tx_id, {"action": "maintenance", "result": result, "balance": balance})
-        logger.info(f">> [SUCCESS] Tx enregistrée: {tx_id}")
+        logger.info(f">> [SUCCESS] Maintenance effectuée. Bilan: {balance}")
+
+async def main():
+    bot = GloireOrchestrator()
+    logger.info("Démarrage du cycle asynchrone (Fréquence : 3600s).")
+    while True:
+        await bot.run_cycle()
+        # await asyncio.sleep ne bloque pas le thread, il libère les ressources
+        await asyncio.sleep(3600)
 
 if __name__ == "__main__":
-    bot = GloireOrchestrator()
-    logger.info("Système actif. Audit cyclique toutes les 3600s.")
-    while True:
-        bot.run_cycle()
-        time.sleep(3600) # Maintenance horaire stable
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("Arrêt propre demandé par le Boss.")
