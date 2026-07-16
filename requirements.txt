@@ -1,5 +1,9 @@
-# --- GLOIREPAY SOUVERAIN — MINIMALISTE ---
+# --- GLOIREPAY SOUVERAIN — CORE VIP ---
 web3
 eth-account
 requests
 pytest
+pytest-asyncio
+gevent
+gunicorn
+python-dotenv
