@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from web3 import Web3
 from web3.middleware import geth_poa_middleware
 
@@ -7,27 +8,28 @@ logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [WEB3-VIP] %(messa
 logger = logging.getLogger("GloirePay-VIP")
 
 class GloireWeb3Manager:
-    """Gestionnaire souverain de fonds et d'audit blockchain."""
+    """Gestionnaire souverain de fonds et d'audit blockchain (Version Pro VIP)."""
     
     def __init__(self, provider_url):
         self.w3 = Web3(Web3.HTTPProvider(provider_url))
-        # Injection du middleware PoA indispensable pour les réseaux type zkEVM/Polygon
+        # Injection du middleware PoA indispensable pour zkEVM
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
         
+        # Adresse de Trésorerie souveraine intégrée
         self.registry = {
             "contracts": {
-                "Treasury": Web3.to_checksum_address("0x5c4...") # Remplacer par l'adresse réelle
+                "Treasury": Web3.to_checksum_address("0xA1e615A74D22D9dC3D9388c2b5009DAc7917784d")
             }
         }
 
     def estimate_maintenance_cost(self):
-        """Estimation gas dynamique avec marge de sécurité institutionnelle."""
+        """Estimation gas dynamique ultra-rapide avec marge de sécurité institutionnelle."""
         try:
             if not self.w3.is_connected():
                 raise ConnectionError("Nœud RPC indisponible")
                 
             gas_price = self.w3.eth.gas_price
-            # Buffer de sécurité de 20% pour éviter les échecs de transactions en cas de pic réseau
+            # Buffer de sécurité de 20% pour garantir la validation en période de haute charge
             estimated_wei = int(gas_price * 200000 * 1.2)
             logger.info(f"[Audit] Coût maintenance estimé : {estimated_wei} Wei")
             return estimated_wei
@@ -37,11 +39,11 @@ class GloireWeb3Manager:
             return None
 
     def get_treasury_status(self):
-        """Audit souverain : Lecture d'état avec validation d'intégrité."""
+        """Audit souverain : Lecture d'état avec validation d'intégrité en temps réel."""
         try:
             treasury_addr = self.registry['contracts'].get('Treasury')
             
-            # Validation stricte du checksum
+            # Validation stricte du checksum avant interaction
             if not self.w3.is_checksum_address(treasury_addr):
                 raise ValueError("Intégrité adresse échouée : Checksum invalide")
 
@@ -52,7 +54,7 @@ class GloireWeb3Manager:
                 "address": treasury_addr, 
                 "balance_wei": balance, 
                 "balance_eth": float(self.w3.from_wei(balance, 'ether')),
-                "audit_timestamp": "2026-07-14"
+                "audit_timestamp": datetime.utcnow().isoformat() # Horodatage dynamique UTC
             }
         except Exception as e:
             logger.error(f"[Audit] Erreur accès Trésorerie : {e}")
