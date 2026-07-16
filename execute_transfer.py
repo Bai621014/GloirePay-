@@ -2,13 +2,15 @@ import os
 from web3 import Web3
 
 def send_transaction():
-    # Récupération des secrets injectés par le pipeline GitHub
-    rpc_url = os.getenv('ALCHEMY_API_KEY')
+    # Correction : Utilisation du nom exact du secret GitHub 'POLYGON_RPC_URL'
+    rpc_url = os.getenv('POLYGON_RPC_URL')
     raw_key = os.getenv('POLYGON_PRIVATE_KEY')
     
-    # Sécurité : Si le pipeline ne transmet pas la clé, on stoppe immédiatement
+    # Sécurité : Vérification stricte des variables
+    if not rpc_url:
+        raise ValueError("ERREUR : La variable POLYGON_RPC_URL est vide !")
     if not raw_key:
-        raise ValueError("ERREUR : La variable POLYGON_PRIVATE_KEY est vide dans l'environnement !")
+        raise ValueError("ERREUR : La variable POLYGON_PRIVATE_KEY est vide !")
     
     w3 = Web3(Web3.HTTPProvider(rpc_url))
     
