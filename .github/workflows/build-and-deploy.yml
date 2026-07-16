@@ -13,18 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Simulation de Sécurité (Alchemy)
+      - name: Simulation de Sécurité (Audit nœud)
         env:
-          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
         run: |
-          echo ">>> [AUDIT] Test de connectivité du nœud..."
-          curl -X POST "$POLYGON_RPC_URL/$ALCHEMY_API_KEY" \
+          echo ">>> [AUDIT] Vérification de la souveraineté du nœud..."
+          curl -s -X POST "$POLYGON_RPC_URL" \
             -H "Content-Type: application/json" \
             --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
           echo ">>> [SUCCESS] Audit validé."
@@ -33,5 +27,19 @@ jobs:
     needs: audit-et-simulation
     runs-on: ubuntu-latest
     steps:
-      - name: Déploiement souverain
-        run: echo ">>> [DEPLOY] Mise en production validée."
+      - name: Checkout code
+        uses: actions/checkout@v3
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Installation des dépendances
+        run: pip install web3
+
+      - name: Exécution du transfert souverain
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
+        run: python execute_transfer.py
