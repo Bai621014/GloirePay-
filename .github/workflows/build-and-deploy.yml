@@ -15,7 +15,6 @@ jobs:
 
       - name: Simulation de Sécurité (Audit nœud)
         env:
-          # On utilise POLYGON_RPC_URL ici
           POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
         run: |
           echo ">>> [AUDIT] Vérification de la souveraineté du nœud..."
@@ -41,7 +40,6 @@ jobs:
 
       - name: Exécution du transfert souverain
         env:
-          # On injecte les deux secrets avec les noms corrects
           POLYGON_PRIVATE_KEY: ${{ secrets.POLYGON_PRIVATE_KEY }}
           POLYGON_RPC_URL: ${{ secrets.POLYGON_RPC_URL }}
         run: python execute_transfer.py
