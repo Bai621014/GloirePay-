@@ -2,19 +2,83 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GloirePay — Dashboard Souverain</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: #fff; padding: 50px; }
-        .card { border: 1px solid #333; padding: 20px; border-radius: 10px; background: #111; }
-        .status { color: {{ '#00ff9d' if treasury.status == 'online' else '#ff4d4d' }}; }
+        :root { 
+            --bg: #0a0a0a; 
+            --card: #111; 
+            --border: #333; 
+            --green: #00ff9d; 
+            --red: #ff4d4d; 
+            --text: #ffffff;
+            --muted: #888;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            margin: 0; 
+        }
+        .card { 
+            border: 1px solid var(--border); 
+            padding: 40px; 
+            border-radius: 16px; 
+            background: var(--card); 
+            width: 100%; 
+            max-width: 500px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+        }
+        h1 { 
+            font-size: 1.5rem; 
+            margin-bottom: 25px; 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 10px; 
+        }
+        .data-row { 
+            margin: 15px 0; 
+            font-size: 1rem; 
+        }
+        .status { 
+            font-weight: bold; 
+            color: {{ '#00ff9d' if treasury.status == 'online' else '#ff4d4d' }}; 
+        }
+        .address { 
+            font-family: 'Courier New', monospace; 
+            font-size: 0.85rem; 
+            color: var(--muted); 
+            word-break: break-all; 
+        }
+        .nav-link {
+            margin-top: 30px;
+            display: block;
+            text-decoration: none; 
+            color: var(--green); 
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>GloirePay — État Nodal</h1>
-        <p>Statut Trésorerie : <span class="status">{{ treasury.status|upper }}</span></p>
-        <p>Adresse : {{ treasury.address }}</p>
-        <p>Solde (Wei) : {{ treasury.balance_wei }}</p>
+        
+        <div class="data-row">
+            Statut Trésorerie : <span class="status">{{ treasury.status|upper }}</span>
+        </div>
+        
+        <div class="data-row">
+            Adresse : <p class="address">{{ treasury.address }}</p>
+        </div>
+        
+        <div class="data-row">
+            Solde (Wei) : <strong>{{ treasury.balance_wei }}</strong>
+        </div>
+        
+        <a href="/analyze" class="nav-link">Accéder à l'Audit Souverain →</a>
     </div>
 </body>
 </html>
