@@ -1,11 +1,1 @@
-gunicorn src.app:app \
-  --bind 0.0.0.0:8000 \
-  --workers 4 \
-  --worker-class gevent \
-  --threads 2 \
-  --timeout 30 \
-  --access-logfile logs/access.log \
-  --error-logfile logs/error.log \
-  --capture-output \
-  --log-level info \
-  --reload
+web: mkdir -p logs && gunicorn src.app:app --bind 0.0.0.0:$PORT --workers 4 --worker-class gevent --threads 2 --timeout 30 --access-logfile logs/access.log --error-logfile logs/error.log --capture-output --log-level info
