@@ -1,8 +1,3 @@
-"""
-GLOIREPAY — MOTEUR D'AUDIT SOUVERAIN (2026.VIP)
-Standard ISO 20022 : Validation structurée, criticité et intégrité.
-"""
-
 from datetime import datetime, timezone
 from typing import Dict, List, Any
 import logging
@@ -19,19 +14,27 @@ class SecurityAudit:
         ]
 
     def audit(self, context: Dict[str, Any]) -> Dict[str, Any]:
-        """Génère un rapport d'audit signé temporellement."""
+        """Génère un rapport d'audit signé temporellement avec calcul de risque."""
         report = {
             "meta": {
                 "timestamp": datetime.now(timezone.utc).isoformat(),
                 "version": "2026.VIP",
                 "status": "SECURE_AUDIT"
             },
-            "findings": {}
+            "findings": {},
+            "risk_level": "LOW" # Calcul dynamique ajouté
         }
         
+        has_critical = False
         for pilier in self.piliers:
-            report["findings"][pilier] = self._check_pilier(pilier, context)
+            findings = self._check_pilier(pilier, context)
+            report["findings"][pilier] = findings
             
+            # Calcul du niveau de risque global
+            if any(f.get("severity") == "Critique" for f in findings):
+                has_critical = True
+        
+        report["risk_level"] = "CRITICAL" if has_critical else "LOW"
         return report
 
     def _check_pilier(self, pilier: str, context: Dict[str, Any]) -> List[Dict[str, Any]]:
