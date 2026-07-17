@@ -19,7 +19,7 @@ jobs:
           curl -s -X POST "$POLYGON_RPC_URL" \
             -H "Content-Type: application/json" \
             --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
-          ls -R  # Vérification que vos dossiers core/, hub/, etc., sont bien présents
+          ls -R
 
   deploy:
     needs: audit-et-simulation
@@ -39,5 +39,5 @@ jobs:
         run: pip install web3 requests
 
       - name: Exécution du moteur GloireTech
-        # On priorise votre moteur centralisé à la racine
-        run: python deploy_engine.py
+        # Correction : ajout de PYTHONPATH pour forcer Python à voir les fichiers à la racine
+        run: PYTHONPATH=$PYTHONPATH:. python deploy_engine.py
