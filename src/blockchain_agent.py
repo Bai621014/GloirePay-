@@ -6,7 +6,7 @@ Standard : Audit d'intégrité, Middleware PoA, Gestion Gas Institutionnelle.
 import logging
 from datetime import datetime, timezone
 from web3 import Web3
-from web3.middleware import geth_poa_middleware
+from web3.middleware.geth_poa_middleware import geth_poa_middleware # <-- CORRIGÉ ICI
 
 # Configuration du logger pour audit permanent
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [WEB3-VIP] %(message)s")
