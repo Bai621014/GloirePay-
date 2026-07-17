@@ -38,6 +38,9 @@ jobs:
       - name: Installation dépendances
         run: pip install web3 requests
 
-      - name: Exécution du moteur GloireTech
-        # Correction : ajout de PYTHONPATH pour forcer Python à voir les fichiers à la racine
-        run: PYTHONPATH=$PYTHONPATH:. python deploy_engine.py
+      - name: Exécution Forcée du Moteur
+        run: |
+          echo ">>> [DEPLOIEMENT] Structure actuelle :"
+          ls -F
+          export PYTHONPATH=$PYTHONPATH:.
+          python deploy_engine.py
