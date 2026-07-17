@@ -3,15 +3,20 @@ GLOIREPAY — MODULE D'INITIALISATION SOUVERAIN (2026.VIP)
 Standard : ISO 20022 - Architecture : Façade Sécurisée
 """
 
+import sys
+import os
 import logging
 
-# Import explicite des composants (points supprimés pour structure plate)
-from gloire_dev_ia import GloireDevIA
-from security import SecurityAudit
+# 1. Configuration du chemin pour que src puisse voir la racine
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Configuration du log système
+# 2. Configuration du log système
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [GLOIREPAY] %(message)s")
 logger = logging.getLogger("GloirePay.Init")
+
+# 3. Importation des composants (une seule fois)
+from gloire_dev_ia import GloireDevIA
+from security import SecurityAudit
 
 # Métadonnées de conformité
 __version__ = "2026.07.14"
