@@ -1,16 +1,11 @@
 """
 GLOIREPAY — GESTIONNAIRE WEB3 SOUVERAIN (2026.VIP)
+Version nettoyée : Dépendances middleware optimisées.
 """
 
 import logging
 from datetime import datetime, timezone
 from web3 import Web3
-
-# Import compatible v5 et v6
-try:
-    from web3.middleware.geth_poa_middleware import geth_poa_middleware # web3 >= 6
-except ImportError:
-    from web3.middleware import geth_poa_middleware # web3 == 5
 
 # Configuration du logger pour audit permanent
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] [WEB3-VIP] %(message)s")
@@ -22,8 +17,9 @@ class GloireWeb3Manager:
     def __init__(self, provider_url: str):
         self.w3 = Web3(Web3.HTTPProvider(provider_url))
         
-        # Injection du middleware PoA indispensable pour zkEVM
-        self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        # SUPPRESSION DU MIDDLEWARE : Inutile pour les nœuds standards (Polygon/Mainnet)
+        # et cause principale des erreurs de déploiement.
+        logger.info("[SYSTEM] Gestionnaire Web3 initialisé (Mode Standard).")
         
         # Registre des contrats souverains
         self.registry = {
@@ -31,7 +27,6 @@ class GloireWeb3Manager:
                 "Treasury": Web3.to_checksum_address("0xA1e615A74D22D9dC3D9388c2b5009DAc7917784d")
             }
         }
-        logger.info("[SYSTEM] Gestionnaire Web3 initialisé avec succès.")
 
     def estimate_maintenance_cost(self) -> int:
         try:
