@@ -14,6 +14,7 @@ from typing import Any, Dict, List, Optional
 
 # Configuration Sécurité
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+logger = logging.getLogger("GloireDevIA.Coder")
 SRC_DIR = Path(__file__).resolve().parent
 
 class SecurityAuditPatch:
@@ -28,7 +29,7 @@ class SecurityAuditPatch:
             "original": original,
             "suggestion": suggestion,
             "rationale": rationale,
-            "integrity_hash": f"0x{integrity_hash[:32]}" # Format style Web3
+            "integrity_hash": f"0x{integrity_hash[:32]}"
         }
 
 def analyze_file_pro(path: Path) -> Dict[str, Any]:
@@ -36,16 +37,15 @@ def analyze_file_pro(path: Path) -> Dict[str, Any]:
     try:
         text = path.read_text(encoding="utf-8")
         tree = ast.parse(text)
-        # ... (Logique AST existante optimisée) ...
         return {"path": str(path), "status": "AUDITED"}
     except Exception as e:
+        logger.error(f"Erreur d'analyse sur {path}: {e}")
         return {"path": str(path), "error": str(e)}
 
 def generate_update(problem: str, targets: Optional[List[str]] = None) -> Dict[str, Any]:
     """Point d'entrée VIP : Analyse parallèle et patches sécurisés."""
     files = [SRC_DIR / t for t in targets] if targets else list(SRC_DIR.rglob("*.py"))
     
-    # Analyse parallèle (Innovation Vitesse)
     with ThreadPoolExecutor() as executor:
         reports = list(executor.map(analyze_file_pro, files))
 
@@ -53,8 +53,6 @@ def generate_update(problem: str, targets: Optional[List[str]] = None) -> Dict[s
     # Logique de génération de patchs sécurisés
     for report in reports:
         if "error" in report: continue
-        # ... (Implémentation de la logique de suggestion) ...
-        # Utilisation de SecurityAuditPatch.create_patch ici
         
     return {
         "problem": problem,
@@ -64,5 +62,4 @@ def generate_update(problem: str, targets: Optional[List[str]] = None) -> Dict[s
     }
 
 if __name__ == "__main__":
-    # Point d'entrée souverain
     print(json.dumps(generate_update("audit"), indent=2))
